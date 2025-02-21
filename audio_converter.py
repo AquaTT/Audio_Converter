@@ -55,12 +55,21 @@ def browse_file():
         entry.delete(1.0, tk.END)
         entry.insert(tk.END, input_path)
 
+def choose_output_directory():
+    global output_directory
+    output_directory = filedialog.askdirectory()
+    if output_directory:
+        output_dir_entry.config(state=tk.NORMAL)
+        output_dir_entry.delete(0, tk.END)
+        output_dir_entry.insert(0, output_directory)
+        output_dir_entry.config(state=tk.DISABLED)
+
 def convert_button_click():
     input_path = entry.get("1.0", tk.END).strip()
     if input_path:
         format_choice = format_var.get()
         convert_audio(input_path, output_directory, format_choice)
-        result_label.config(text=f"変換しました: {input_path}\n何か問題があればDiscordに連絡ください。ID:6x00")
+        result_label.config(text=f"変換が完了しました\n何か問題があればDiscordに連絡ください。ID:6x00")
 
 app = TkinterDnD.Tk()
 app.title('Audio Converter')
@@ -68,7 +77,7 @@ app.title('Audio Converter')
 frame = tk.Frame(app)
 frame.pack(padx=10, pady=10)
 
-label = tk.Label(frame, text="ファイルを青い枠にドロップするか、参照してください")
+label = tk.Label(frame, text="変換したいファイルを青い枠にドロップするか、参照してください")
 label.pack()
 
 browse_button = tk.Button(frame, text="ファイルを参照", command=browse_file)
@@ -93,11 +102,19 @@ format_choices = ["mp3", "wav", "ogg"]
 format_menu = tk.OptionMenu(button_frame, format_var, *format_choices)
 format_menu.pack(side=tk.LEFT)
 
+output_dir_frame = tk.Frame(frame)
+output_dir_frame.pack(pady=5)
+
+output_dir_button = tk.Button(output_dir_frame, text="出力ディレクトリを選択", command=choose_output_directory)
+output_dir_button.pack(side=tk.LEFT)
+
+output_dir_entry = tk.Entry(output_dir_frame, width=50, state=tk.DISABLED)
+output_dir_entry.pack(side=tk.LEFT)
+
 convert_button = tk.Button(frame, text="変換", command=convert_button_click)
 convert_button.pack(pady=5)
 
-user_home_directory = os.path.expanduser("~")
-output_directory = os.path.join(user_home_directory, "Desktop", "audio_converter")
+output_directory = ""
 
 result_label = tk.Label(app, text="")
 result_label.pack(pady=5)
