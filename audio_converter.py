@@ -11,6 +11,8 @@ def convert_audio(input_path, output_directory, format_choice):
         audio = AudioSegment.from_wav(input_path)
     elif input_path.lower().endswith('.ogg'):
         audio = AudioSegment.from_ogg(input_path)
+    elif input_path.lower().endswith('.flac'):
+        audio = AudioSegment.from_file(input_path, format="flac")
     elif input_path.lower().endswith('.mp4'):
         audio = AudioSegment.from_file(input_path, format="mp4")
     elif input_path.lower().endswith('.avi'):
@@ -32,6 +34,9 @@ def convert_audio(input_path, output_directory, format_choice):
     elif format_choice.lower() == 'mp3':
         output_name = os.path.splitext(base_name)[0] + ".mp3"
         output_format = "mp3"
+    elif format_choice.lower() == 'flac':
+        output_name = os.path.splitext(base_name)[0] + ".flac"
+        output_format = "flac"
     else:
         raise ValueError("次のファイル形式しかサポートしていません 'mp3','wav','ogg'.")
 
@@ -98,7 +103,7 @@ format_var = tk.StringVar(value="mp3")
 format_label = tk.Label(button_frame, text="変換形式を選んでください:")
 format_label.pack(side=tk.LEFT)
 
-format_choices = ["mp3", "wav", "ogg"]
+format_choices = ["mp3", "wav", "ogg", "flac"]
 format_menu = tk.OptionMenu(button_frame, format_var, *format_choices)
 format_menu.pack(side=tk.LEFT)
 
