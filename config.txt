@@ -1,0 +1,14 @@
+[extension]
+.mp3
+.wav
+.ogg
+.flac
+.mp4
+.avi
+.mov
+.webm
+[output]
+mp3
+wav
+ogg
+flac
